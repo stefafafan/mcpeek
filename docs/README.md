@@ -15,6 +15,7 @@ See the [official guidance mapping](security-guidance.md) for rationale and scop
 | [sensitive-mount](rules/sensitive-mount.md) | Warning | Filesystem roots, home directories, and credential paths |
 | [host-namespace](rules/host-namespace.md) | Warning | Host network, PID, and IPC sharing |
 | [remote-http](rules/remote-http.md) | Warning | Plaintext remote MCP endpoints |
+| [tls-verification-disabled](rules/tls-verification-disabled.md) | Error | Explicit Node.js certificate-verification bypass |
 
 ## Reading the examples
 

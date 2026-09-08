@@ -76,7 +76,17 @@ func sortedKeys[V any](m map[string]V) []string {
 	return keys
 }
 
-var Severities = map[string]string{"secret-literal": "warning", "package-unpinned": "warning", "image-unpinned": "warning", "docker-privileged": "error", "docker-socket": "error", "sensitive-mount": "warning", "host-namespace": "warning", "remote-http": "warning"}
+var Severities = map[string]string{
+	"secret-literal":            "warning",
+	"package-unpinned":          "warning",
+	"image-unpinned":            "warning",
+	"docker-privileged":         "error",
+	"docker-socket":             "error",
+	"sensitive-mount":           "warning",
+	"host-namespace":            "warning",
+	"remote-http":               "warning",
+	"tls-verification-disabled": "error",
+}
 
 func (r *Result) finding(server, path, rule, message string) {
 	r.Findings = append(r.Findings, Finding{Rule: rule, Severity: Severities[rule], Server: server, Path: path, Message: message})
@@ -111,6 +121,9 @@ func (r *Result) server(name string, raw json.RawMessage) {
 					continue
 				}
 				r.credential(name, field(field(p, key), k), k, v)
+				if key == "env" && s["command"] != nil {
+					r.tlsEnvironment(name, field(field(p, key), k), k, v)
+				}
 			}
 		}
 	}

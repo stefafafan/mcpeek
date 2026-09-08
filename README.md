@@ -64,7 +64,7 @@ downstream formatter such as `jq`.
 
 ## Initial Rules
 
-All eight rules are implemented. The [rule guide](docs/README.md) explains each
+All nine rules are implemented. The [rule guide](docs/README.md) explains each
 check with triggering examples, alternatives, diagnostics, and detection limits.
 The [official guidance mapping](docs/security-guidance.md) relates these checks
 to MCP security recommendations and identifies what mcpeek cannot assess.
@@ -81,6 +81,7 @@ configuration analysis, not a scan of server code or transitive dependencies.
 | [sensitive-mount](docs/rules/sensitive-mount.md) | Warning | Docker mounts `/`, the user's home directory, or recognized credential directories such as `.ssh` and `.aws`. |
 | [host-namespace](docs/rules/host-namespace.md) | Warning | Docker explicitly shares the host network, PID, or IPC namespace. |
 | [remote-http](docs/rules/remote-http.md) | Warning | A remote MCP endpoint uses plaintext HTTP. Loopback HTTP is excluded from this rule, not certified secure. |
+| [tls-verification-disabled](docs/rules/tls-verification-disabled.md) | Error | A command's environment or Docker env option explicitly sets `NODE_TLS_REJECT_UNAUTHORIZED=0`. |
 
 Command arguments must be parsed structurally. An unrelated argument containing the text `--privileged` must not trigger a Docker finding. Unsupported wrappers or launch syntax must be reported as unassessed rather than guessed at.
 
@@ -238,6 +239,15 @@ File paths, server names, field names, and exception reasons remain visible.
 `remote-http` excludes literal loopback IPs (including IPv4-mapped IPv6) and
 `localhost`, case-insensitively, with an optional trailing dot. Private-network
 addresses, `0.0.0.0`, and lookalike hostnames are not excluded. DNS is never queried.
+
+### TLS Verification
+
+`tls-verification-disabled` recognizes the exact name
+`NODE_TLS_REJECT_UNAUTHORIZED` with the exact string value `0` in command `env`
+maps and Docker `-e`/`--env` options before the image. Repeated Docker assignments
+use their final value. Inherited or variable values, HTTP headers, URL-only
+server environments, arbitrary arguments, and other TLS settings are not checked.
+This detects a configured bypass, not whether the launched code uses Node's TLS.
 
 ## JSON Output
 
