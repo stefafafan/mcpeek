@@ -24,7 +24,7 @@ Flags suspected credentials stored directly in recognized configuration fields. 
 Running `mcpeek .mcp.json` on this input prints:
 
 ```text
-.mcp.json:$.mcpServers.docs.headers.Authorization: warning secret-literal: suspected literal credential [REDACTED]
+.mcp.json:$.mcpServers.docs.headers.Authorization: warning secret-literal: suspected literal credential
 ```
 
 With default options and no exceptions, the exit code is `1`.
@@ -65,7 +65,7 @@ still triggers the rule. Docker `-e API_TOKEN` inherits a value and is excluded.
 Variable recognition does not guarantee that your client expands that syntax.
 Arbitrary server arguments and unrecognized field names are not secret-scanned.
 Finding messages never include credential values; URL credentials use the message
-`suspected literal URL credential [REDACTED]`. File paths, server names, field
+`suspected literal URL credential`. File paths, server names, field
 names, and exception reasons remain visible.
 
 ## Accepted exceptions
@@ -82,4 +82,3 @@ visible in JSON output, and incomplete analysis still exits `2`.
 
 `--fail-on error` keeps this warning visible but does not fail solely because of
 it. It does not suppress the finding.
-

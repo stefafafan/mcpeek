@@ -71,7 +71,7 @@ configuration analysis, not a scan of server code or transitive dependencies.
 
 | Rule | Default severity | Condition |
 | --- | --- | --- |
-| [secret-literal](docs/rules/secret-literal.md) | Warning | A recognized credential field contains a suspected literal secret rather than a supported variable reference. Values are redacted. |
+| [secret-literal](docs/rules/secret-literal.md) | Warning | A recognized credential field contains a suspected literal secret rather than a supported variable reference. Credential values are never included in output. |
 | [package-unpinned](docs/rules/package-unpinned.md) | Warning | A supported `npx` or `uvx` registry package omits an exact version or uses a mutable tag/range. Supported full-SHA Git references count as pinned. |
 | [image-unpinned](docs/rules/image-unpinned.md) | Warning | A Docker image is not pinned by digest. Version tags can move too. |
 | [docker-privileged](docs/rules/docker-privileged.md) | Error | A Docker launch enables `--privileged`. |

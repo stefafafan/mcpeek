@@ -37,7 +37,7 @@ func literal(value string) bool {
 }
 func (r *Result) credential(server, path, key, value string) {
 	if credentialKey(key) && literal(value) {
-		r.finding(server, path, "secret-literal", "suspected literal credential [REDACTED]")
+		r.finding(server, path, "secret-literal", "suspected literal credential")
 	}
 }
 func (r *Result) remote(server, path, endpoint string) {
@@ -48,7 +48,7 @@ func (r *Result) remote(server, path, endpoint string) {
 	}
 	if u.User != nil {
 		if password, ok := u.User.Password(); ok && literal(password) {
-			r.finding(server, path, "secret-literal", "suspected literal URL credential [REDACTED]")
+			r.finding(server, path, "secret-literal", "suspected literal URL credential")
 		}
 	}
 	query, err := url.ParseQuery(u.RawQuery)
