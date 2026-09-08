@@ -18,7 +18,6 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: '1.27.1'
-          cache: false
       - name: Check formatting
         shell: bash
         run: test -z "$(gofmt -l .)"
@@ -26,6 +25,8 @@ jobs:
         uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
         with:
           version: v2.13.2
+      - name: Check vulnerabilities
+        run: go tool govulncheck ./...
       - name: Test with race detector
         run: go test -race -cover ./...
       - name: Build
