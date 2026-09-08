@@ -72,7 +72,7 @@ configuration analysis, not a scan of server code or transitive dependencies.
 | Rule | Default severity | Condition |
 | --- | --- | --- |
 | [secret-literal](docs/rules/secret-literal.md) | Warning | A recognized credential field contains a suspected literal secret rather than a supported variable reference. Values are redacted. |
-| [package-unpinned](docs/rules/package-unpinned.md) | Warning | A supported `npx` or `uvx` launch omits an exact package version or uses a mutable tag/range. |
+| [package-unpinned](docs/rules/package-unpinned.md) | Warning | A supported `npx` or `uvx` registry package omits an exact version or uses a mutable tag/range. Supported full-SHA Git references count as pinned. |
 | [image-unpinned](docs/rules/image-unpinned.md) | Warning | A Docker image is not pinned by digest. Version tags can move too. |
 | [docker-privileged](docs/rules/docker-privileged.md) | Error | A Docker launch enables `--privileged`. |
 | [docker-socket](docs/rules/docker-socket.md) | Error | A Docker socket is mounted into the container, including read-only mounts. |
@@ -153,9 +153,28 @@ three-component version, optionally with prerelease/build identifiers; omitted
 versions, tags, wildcards, and ranges produce `package-unpinned`. Python registry
 names may include extras. Pins use `==VERSION` or `@VERSION`, with numeric release
 components and optional `a`, `b`, `rc`, `.post`, `.dev`, or local-version suffixes.
-Python ranges/wildcards and `@latest` are unpinned. Other version forms, Git/URL/
-local-path packages, shell command modes, and unknown launcher options are
-unassessed. Pinning applies to explicitly selected packages, not their dependencies.
+Python ranges/wildcards and `@latest` are unpinned.
+
+Git references with a full 40-hex commit SHA also count as pinned:
+
+- npm: `git+https://HOST/REPO.git#SHA`, `git+http://HOST/REPO.git#SHA`,
+  `git+ssh://git@HOST/REPO.git#SHA`, `git://HOST/REPO.git#SHA`,
+  `github:OWNER/REPO#SHA`, and `OWNER/REPO#SHA`.
+- npm also recognizes `https://github.com/OWNER/REPO.git#SHA` and its HTTP form.
+  GitHub URLs must name the repository directly; paths such as `/tree/main` are
+  unassessed. Arbitrary HTTP archive URLs are not treated as Git references.
+- uv: `git+https://HOST/REPO.git@SHA`, `git+http://HOST/REPO.git@SHA`, and
+  `git+ssh://git@HOST/REPO.git@SHA`, used directly or with `--from` or `--with`. Named
+  requirements such as `server[cli] @ git+https://HOST/REPO.git@SHA` are supported,
+  as is a `#subdirectory=packages/server` fragment with simple relative components.
+
+Git branches, tags, omitted revisions, abbreviated SHAs, and other Git syntax
+remain unassessed (exit `2`); this Git support is limited to full SHA-1 references.
+No repository is contacted and commit existence is not verified. An npm registry
+selector such as `server@<40-hex-tag>` is still an unpinned tag, not a Git pin.
+Other version forms, archive URLs, local-path packages, shell command modes, and
+unknown launcher options are unassessed. Pinning applies to explicitly selected
+packages, not their dependencies.
 
 ### Docker Launches
 
