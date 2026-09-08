@@ -16,6 +16,7 @@ severities, pin formats, and recognized paths are mcpeek policy.
 | [sensitive-mount](rules/sensitive-mount.md) | [Local server compromise][local] | Directly aligns with warnings about sensitive filesystem access. |
 | [host-namespace](rules/host-namespace.md) | [Local server compromise][local] | Applies network/system isolation recommendations to Docker. |
 | [remote-http](rules/remote-http.md) | [Communication security][https] | Checks MCP endpoint schemes, not OAuth endpoints. The loopback exclusion is mcpeek policy. |
+| [tls-verification-disabled](rules/tls-verification-disabled.md) | [Communication security][https] | Flags an explicit Node.js certificate-verification bypass; not a full TLS audit. |
 
 ## Limits
 

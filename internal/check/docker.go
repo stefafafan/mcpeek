@@ -20,8 +20,12 @@ func (r *Result) docker(server, path string, args []string) {
 	}
 	privileged := false
 	namespaces := map[string]string{}
+	environment := map[string]string{}
 	// Scalar Docker options use their final value; mounts and env options repeat.
 	defer func() {
+		for _, key := range sortedKeys(environment) {
+			r.tlsEnvironment(server, path, key, environment[key])
+		}
 		if privileged {
 			r.finding(server, path, "docker-privileged", "Docker launch enables privileged mode")
 		}
@@ -99,6 +103,8 @@ func (r *Result) docker(server, path string, args []string) {
 			r.mount(server, path, value)
 		case "-e", "--env":
 			k, v, ok := strings.Cut(value, "=")
+			// Later assignments override earlier ones; inherited values stay unknown.
+			environment[k] = v
 			if ok {
 				r.credential(server, path, k, v)
 			}
