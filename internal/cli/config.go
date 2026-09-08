@@ -124,9 +124,10 @@ func stripComments(data []byte) ([]byte, error) {
 				escaped = false
 				continue
 			}
-			if data[i] == '\\' {
+			switch data[i] {
+			case '\\':
 				escaped = true
-			} else if data[i] == '"' {
+			case '"':
 				inString = false
 			}
 			continue

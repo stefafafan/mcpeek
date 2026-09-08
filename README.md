@@ -256,13 +256,18 @@ bracket notation; control characters are escaped in text diagnostics.
 ```sh
 go test -race -cover ./...
 go vet ./...
+go tool govulncheck ./...
 go build ./...
 ```
 
 The implementation was developed test-first, with table-driven rule and CLI
-contract tests. GitHub Actions runs formatting, vet, race tests, and build checks
-with Go 1.27.1 on Linux, macOS, and Windows. Runtime code uses only the standard
+contract tests. GitHub Actions runs formatting, golangci-lint, govulncheck, race
+tests, and build checks with Go 1.27.1 on Ubuntu. Runtime code uses only the standard
 library and has no network or process-execution dependencies.
+
+govulncheck is recorded as a tool dependency in `go.mod`. `go tool govulncheck`
+uses that version locally and in CI; it downloads vulnerability data when run.
+To update it, run `go get -tool golang.org/x/vuln/cmd/govulncheck@VERSION`.
 
 ## References
 

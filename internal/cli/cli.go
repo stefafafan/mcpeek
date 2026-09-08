@@ -39,7 +39,7 @@ func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version strin
 	var ignores stringsFlag
 	fs.Var(&ignores, "ignore", "")
 	if fs.Parse(args) != nil {
-		fmt.Fprintln(stderr, "mcpeek: invalid arguments; use --help")
+		_, _ = fmt.Fprintln(stderr, "mcpeek: invalid arguments; use --help")
 		return 2
 	}
 	if *help || *shortHelp {
@@ -55,7 +55,7 @@ func Run(args []string, stdin io.Reader, stdout, stderr io.Writer, version strin
 		return 0
 	}
 	if fs.NArg() != 1 || (*format != "text" && *format != "json") || (*threshold != "warning" && *threshold != "error") {
-		fmt.Fprintln(stderr, "mcpeek: invalid arguments; use --help")
+		_, _ = fmt.Fprintln(stderr, "mcpeek: invalid arguments; use --help")
 		return 2
 	}
 	file := fs.Arg(0)
@@ -96,7 +96,7 @@ func render(result check.Result, format, threshold string, stdout, stderr io.Wri
 	}
 	if format == "json" {
 		if json.NewEncoder(stdout).Encode(result) != nil {
-			fmt.Fprintln(stderr, "mcpeek: cannot write output")
+			_, _ = fmt.Fprintln(stderr, "mcpeek: cannot write output")
 			return 2
 		}
 	} else {
