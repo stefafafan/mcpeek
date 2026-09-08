@@ -66,6 +66,8 @@ downstream formatter such as `jq`.
 
 All eight rules are implemented. The [rule guide](docs/README.md) explains each
 check with triggering examples, alternatives, diagnostics, and detection limits.
+The [official guidance mapping](docs/security-guidance.md) relates these checks
+to MCP security recommendations and identifies what mcpeek cannot assess.
 The supported syntax and recognition boundaries are listed below; this is static
 configuration analysis, not a scan of server code or transitive dependencies.
 
@@ -290,7 +292,13 @@ To update it, run `go get -tool golang.org/x/vuln/cmd/govulncheck@VERSION`.
 
 ## References
 
-The checklist is informed by these articles; the rule selection and CLI design are this project's interpretation, not a certification of compliance:
+The checklist is informed by the following guidance. The rule selection and CLI
+design are this project's interpretation, not a certification of compliance.
+See the [rule-to-guidance mapping](docs/security-guidance.md) for coverage and limits.
+
+- [Official MCP Security Best Practices (2026-07-28)](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices)
+- [Official MCP Authorization Security Considerations (2026-07-28)](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/security-considerations)
+- [Official MCP Streamable HTTP: Security & Endpoint (2026-07-28)](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http#security--endpoint)
 
 - [GMO Flatt Security: MCP security considerations, part 1](https://blog.flatt.tech/entry/mcp_security_first)
 - [GMO Flatt Security: MCP security considerations, part 2](https://blog.flatt.tech/entry/mcp_security_second)

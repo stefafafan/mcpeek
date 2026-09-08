@@ -3,6 +3,8 @@
 Each rule page explains what mcpeek detects, shows complete JSON configurations
 with and without the finding, and describes the limits of the check.
 
+See the [official guidance mapping](security-guidance.md) for rationale and scope.
+
 | Rule | Severity | Focus |
 | --- | --- | --- |
 | [secret-literal](rules/secret-literal.md) | Warning | Credentials stored directly in configuration |
