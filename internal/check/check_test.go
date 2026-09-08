@@ -101,6 +101,21 @@ func TestSecrets(t *testing.T) {
 	}
 }
 
+func TestSecretMessages(t *testing.T) {
+	for _, tc := range []struct {
+		server  string
+		message string
+	}{
+		{`{"url":"https://example.com","headers":{"Authorization":"example-secret"}}`, "suspected literal credential"},
+		{`{"url":"https://user:example-secret@example.com"}`, "suspected literal URL credential"},
+	} {
+		r := scanServer(tc.server)
+		if len(r.Findings) != 1 || r.Findings[0].Message != tc.message {
+			t.Fatalf("unexpected secret diagnostic: %+v", r)
+		}
+	}
+}
+
 func TestPartialAndDeterministic(t *testing.T) {
 	input := []byte(`{"mcpServers":{"z":{"command":"sh","env":{"TOKEN":"secret"}},"a":{"url":"http://example.com"}}}`)
 	first := Scan(input, "f")
