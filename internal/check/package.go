@@ -12,6 +12,9 @@ var pythonExact = regexp.MustCompile(`^[0-9]+(?:\.[0-9]+)*(?:(?:a|b|rc)[0-9]+)?(
 var pythonRange = regexp.MustCompile(`^(?:==|!=|>=|<=|~=|>|<)[A-Za-z0-9.*+!_-]+(?:\.[A-Za-z0-9.*+!_-]+)*(?:,(?:==|!=|>=|<=|~=|>|<)[A-Za-z0-9.*+!_-]+(?:\.[A-Za-z0-9.*+!_-]+)*)*$`)
 
 func packagePin(spec, kind string) (supported, pinned bool) {
+	if fullCommitGitReference(spec, kind) {
+		return true, true
+	}
 	if kind == "npx" {
 		m := npmSpec.FindStringSubmatch(spec)
 		if m == nil {

@@ -6,7 +6,7 @@ with and without the finding, and describes the limits of the check.
 | Rule | Severity | Focus |
 | --- | --- | --- |
 | [secret-literal](rules/secret-literal.md) | Warning | Credentials stored directly in configuration |
-| [package-unpinned](rules/package-unpinned.md) | Warning | npm and Python package version selection |
+| [package-unpinned](rules/package-unpinned.md) | Warning | npm/Python versions and full-SHA Git pins |
 | [image-unpinned](rules/image-unpinned.md) | Warning | Docker image digest pinning |
 | [docker-privileged](rules/docker-privileged.md) | Error | Privileged Docker launches |
 | [docker-socket](rules/docker-socket.md) | Error | Host Docker socket mounts |
@@ -19,7 +19,7 @@ with and without the finding, and describes the limits of the check.
 Each JSON block is a complete input for mcpeek. The diagnostic examples assume
 the input filename is `.mcp.json`, text output, the default warning failure
 threshold, and no exceptions. The triggering examples each produce one finding
-and exit `1`; the alternatives produce no findings and exit `0`.
+and exit `1`; the alternatives and Git pin examples produce no findings and exit `0`.
 
 Names, versions, credentials, endpoints, and all-`a` image digests are illustrative.
 They are not verified server deployments or package recommendations. Replace
